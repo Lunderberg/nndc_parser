@@ -1,6 +1,6 @@
-import urllib
-import urllib2
-import cookielib
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
+import http.cookiejar
 
 def grab_table(nucleus):
     nucleus = "24Mg"
@@ -10,12 +10,12 @@ def grab_table(nucleus):
         }
 
 
-    data = urllib.urlencode(data)
-    cj = cookielib.CookieJar()
-    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
+    data = urllib.parse.urlencode(data).encode('ascii')
+    cj = http.cookiejar.CookieJar()
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
     opener.open('http://www.nndc.bnl.gov/chart/checkENSDFDatasets.jsp?nucleus={}'.format(nucleus))
     response = opener.open('http://www.nndc.bnl.gov/chart/getENSDFDatasets.jsp',data)
-    html = response.read()
+    html = response.read().decode('ascii')
 
     begin = '<pre>'
     end = '</pre>'

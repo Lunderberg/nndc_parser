@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 from downloader import grab_table
 from parsers import Level, Transition, parse_table

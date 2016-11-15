@@ -2,7 +2,8 @@ class Level(object):
     def __init__(self):
         self.energy = None
         self.energy_uncertainty = None
-        self.transitions = []
+        self.transitions_from = []
+        self.transitions_to = []
         self.spin_parity = None
 
     @staticmethod
@@ -68,10 +69,15 @@ def parse_table(table):
 
         if Transition.IsValidRecord(line):
             transition = Transition.FromRecord(line)
-            transition.initial_state = current_level
-            transition.final_state = min(all_levels,
+            initial_state = current_level
+            final_state = min(all_levels,
                   key=lambda state:abs(state.energy - (current_level.energy - transition.energy)))
-            current_level.transitions.append(transition)
+
+            transition.initial_state = initial_state
+            transition.final_state = final_state
+            initial_state.transitions_from.append(transition)
+            final_state.transitions_to.append(transition)
+
 
     if current_level is not None:
         all_levels.append(current_level)
